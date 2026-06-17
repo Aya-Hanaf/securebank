@@ -1,0 +1,15 @@
+# Datasource is provided automatically by @ServiceConnection (Testcontainers).
+# Only values that have no sensible default in application.yml are set here.
+
+jwt:
+  # "securebank-integration-test-secret-key-not-for-production-use" — 62 bytes (496 bits)
+  secret: c2VjdXJlYmFuay1pbnRlZ3JhdGlvbi10ZXN0LXNlY3JldC1rZXktbm90LWZvci1wcm9kdWN0aW9uLXVzZQ==
+  expiration-ms: 3600000        # 1 h
+  refresh-expiration-ms: 7200000 # 2 h
+
+logging:
+  level:
+    com.securebank: DEBUG
+    org.springframework.security: WARN
+    org.flywaydb: INFO
+    org.testcontainers: WARN
