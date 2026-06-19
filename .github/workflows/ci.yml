@@ -20,5 +20,8 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Rendre mvnw exécutable
+        run: chmod +x mvnw
+
       - name: Build avec Maven
         run: ./mvnw clean compile
