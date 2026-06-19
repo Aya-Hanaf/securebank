@@ -25,3 +25,13 @@ jobs:
 
       - name: Build avec Maven
         run: ./mvnw clean compile
+
+      - name: Lancer les tests
+        run: ./mvnw test
+
+      - name: Publier le rapport de tests
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: target/surefire-reports/
