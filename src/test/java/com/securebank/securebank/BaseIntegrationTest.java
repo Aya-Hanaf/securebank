@@ -15,14 +15,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -33,17 +31,22 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles("test")
-@Testcontainers
+@AutoConfigureWebTestClient
 public abstract class BaseIntegrationTest {
 
-    protected static final String API = "/api/v1";
+    protected static final String API = "";
     protected static final String DEFAULT_PASSWORD = "SecureP@ss1";
 
-    // Single container shared across all test classes in the same JVM.
-    @Container
+    // Singleton container: started once per JVM, never explicitly stopped (Ryuk handles cleanup).
+    // @Testcontainers / @Container are intentionally omitted so the JUnit 5 extension does not
+    // stop the container between test classes, which would invalidate the shared Spring context.
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres =
+    static final PostgreSQLContainer<?> postgres =
             new PostgreSQLContainer<>("postgres:16-alpine");
+
+    static {
+        postgres.start();
+    }
 
     @Autowired
     protected WebTestClient webClient;
@@ -158,4 +161,5 @@ public abstract class BaseIntegrationTest {
     protected String uid() {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 8);
     }
+
 }
