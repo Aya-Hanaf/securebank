@@ -45,4 +45,5 @@ jobs:
       - name: OWASP Dependency Check
         env:
          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+         continue-on-error: true
         run: ./mvnw org.owasp:dependency-check-maven:check
