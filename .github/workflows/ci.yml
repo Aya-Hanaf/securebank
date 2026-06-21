@@ -41,3 +41,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./mvnw verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Aya-Hanaf_securebank -Dsonar.organization=aya-hanaf
+
+      - name: OWASP Dependency Check
+        env:
+         NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        run: ./mvnw org.owasp:dependency-check-maven:check
