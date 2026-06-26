@@ -34,3 +34,5 @@ build/
 
 CLAUDE.md
 .claude/
+
+k8s/app-secret.yaml
