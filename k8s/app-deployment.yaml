@@ -5,14 +5,14 @@ metadata:
   labels:
     app: securebank
 spec:
-  replicas: 2
+  replicas: 2   # 2 copies de l'app tournent en parallèle
   selector:
     matchLabels:
-      app: securebank
+      app: securebank   # identifie quels pods appartiennent à ce Deployment
   template:
     metadata:
       labels:
-        app: securebank
+        app: securebank  # doit correspondre au selector ci-dessus
     spec:
       containers:
         - name: securebank
@@ -27,20 +27,34 @@ spec:
                 name: app-secret
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "250m"
-            limits:
               memory: "512Mi"
               cpu: "500m"
+            limits:
+              memory: "768Mi"
+              cpu: "1000m"
           readinessProbe:
             httpGet:
               path: /api/v1/actuator/health
               port: 8080
-            initialDelaySeconds: 60
+            initialDelaySeconds: 90
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /api/v1/actuator/health
               port: 8080
-            initialDelaySeconds: 90
+            initialDelaySeconds: 120
             periodSeconds: 15
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: tmp-volume
+              mountPath: /tmp
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}

@@ -1,0 +1,22 @@
+[1mdiff --git a/k8s/app-deployment.yaml b/k8s/app-deployment.yaml[m
+[1mindex 28e8ecf..bdd516c 100644[m
+[1m--- a/k8s/app-deployment.yaml[m
+[1m+++ b/k8s/app-deployment.yaml[m
+[36m@@ -5,14 +5,14 @@[m [mmetadata:[m
+   labels:[m
+     app: securebank[m
+ spec:[m
+[31m-  replicas: 2[m
+[32m+[m[32m  replicas: 2   # 2 copies de l'app tournent en parallèle[m
+   selector:[m
+     matchLabels:[m
+[31m-      app: securebank[m
+[32m+[m[32m      app: securebank   # identifie quels pods appartiennent à ce Deployment[m
+   template:[m
+     metadata:[m
+       labels:[m
+[31m-        app: securebank[m
+[32m+[m[32m        app: securebank  # doit correspondre au selector ci-dessus[m
+     spec:[m
+       containers:[m
+         - name: securebank[m

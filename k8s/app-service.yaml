@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: securebank-app
 spec:
-  type: ClusterIP
+  type: ClusterIP # accessible uniquement depuis l'intérieur du cluster
   selector:
-    app: securebank
+    app: securebank  # envoie le trafic vers tous les pods avec ce label
   ports:
     - port: 8080
       targetPort: 8080
