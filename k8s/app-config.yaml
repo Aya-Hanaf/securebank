@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  DB_URL: "jdbc:postgresql://securebank-db:5432/securebank"
+  CORS_ALLOWED_ORIGINS: "http://localhost:3000,http://localhost:4200"
+  SERVER_PORT: "8080"

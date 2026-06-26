@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: securebank-app
+  labels:
+    app: securebank
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: securebank
+  template:
+    metadata:
+      labels:
+        app: securebank
+    spec:
+      containers:
+        - name: securebank
+          image: securebank:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: app-secret
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          readinessProbe:
+            httpGet:
+              path: /api/v1/actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/v1/actuator/health
+              port: 8080
+            initialDelaySeconds: 90
+            periodSeconds: 15
