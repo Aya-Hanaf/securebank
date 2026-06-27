@@ -1,0 +1,20 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: securebank-role
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: securebank-rolebinding
+subjects:
+  - kind: ServiceAccount
+    name: securebank-sa
+roleRef:
+  kind: Role
+  name: securebank-role
+  apiGroup: rbac.authorization.k8s.io
